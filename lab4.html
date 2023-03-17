@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab 4</title>
+        <script>
+            function additem(){
+                t=document.getElementById("order");
+                var tr = document.createElement("tr");
+                var th_name = document.createElement("th");
+                var th_cena = document.createElement("th");
+                var in_name=document.getElementById("in_name");
+                th_name.innerText = in_name.value;
+                var in_cena=document.getElementById("in_cena");
+                th_cena.innerText = in_cena.value;
+                tr.appendChild(th_name);
+                tr.appendChild(th_cena);
+                t.appendChild(tr);  
+            }
+            function priceCalc(){
+                let elem = document.getElementById("order");
+                let sum = 0;
+                elem = elem.firstChild;
+                elem = elem.nextSibling;
+                while (elem) {
+                    sum+=parseInt(elem.lastChild.innerText,10);
+                    console.log(sum);
+                    elem = elem.nextSibling;
+                }
+                let dasha2 = document.getElementById("dasha");
+                dasha2.innerText=sum;
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Добавление товара:</h1>
+        <table>
+            <tr>
+                <th>Название: </th>
+                <th><input id="in_name" type="text" value="Товар"/></th>
+            </tr>
+            <tr>
+                <th>Стоимость:</th>
+                <th><input id="in_cena" type="text" value="0"/></th>
+            </tr>
+            <tr>
+                <th colspan="2"><input type="button" value="Add" onclick="additem()"/></th>
+            </tr>
+            <tr>
+                <th colspan="2">Price of all the goods: </th>
+            </tr>
+            <tr>
+                <th colspan="2"><input type="button" value="Calculate" onclick="priceCalc()"/></th>
+            </tr>
+            <tr>
+                <th>Price: </th>
+                <th><input id="dasha" type="text" value="0"/></th>
+            </tr>
+        </table>        
+        <table id="order" border="1">
+            <tr>
+                <th>Название</th>
+                <th>Стоимость</th>
+            </tr>
+        </table>
+    </body>
+</html>

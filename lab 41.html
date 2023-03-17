@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lab 4</title>
+        <style>
+            .form{
+                width: 25em;
+                text-align: center;
+                left: 15%;  
+            }
+            .calc{
+                width: 25em;
+                text-align: center;
+            }
+            p{
+                font-size: 30px;
+            }
+            .table {
+                position: fixed;
+                top: 8%;
+                right: 50%;
+                height: fit-content;
+                width: 25em;
+                text-align: center;
+            }
+            .product_table{
+                border: 2px solid;
+                height: fit-content;
+                width: 25em;
+            }
+            .cart{
+                position: fixed;
+                top: 8%;
+                right: 15%;
+                height: fit-content;
+                width: 25em;
+                text-align: center;
+            }
+            .cart_table{
+                border: 2px solid;
+                height: fit-content;
+                width: 25em;
+            }
+        </style>
+        <script>
+            /// Variable defenitions
+            var item_name="hello";
+            var item_price=0;
+            var id=0;
+            
+            /// Reading the form
+            function read_form() { 
+                item_name = document.getElementById("name").value;
+                item_price = document.getElementById("price").value;
+                if ((parseInt(item_price)==Number(item_price))&&(item_price>0)){
+                    document.getElementById("name").value="";
+                    document.getElementById("price").value="";
+                    return true;
+                }
+                else{
+                    alert("Please check the price")
+                }
+                return false;
+            }
+            /// Adding an item to the list
+
+            function add_item() {
+                if (read_form()) {
+                    id++;
+                    var tbody = document.getElementById("products").getElementsByTagName('tbody')[0];
+                    var row = tbody.insertRow();
+                    var id_cell = row.insertCell();
+                    var name_cell = row.insertCell();
+                    var price_cell = row.insertCell();
+                    var p_id = document.createTextNode(id);
+                    var p_name = document.createTextNode(item_name);
+                    var p_price = document.createTextNode(item_price);
+                    id_cell.appendChild(p_id);
+                    name_cell.appendChild(p_name);
+                    price_cell.appendChild(p_price);
+                    row.setAttribute("onMouseOver", "mouse_over(this)");
+                    row.setAttribute("onMouseOut", "mouse_out(this)");
+                    row.setAttribute("onClick", "add_cart(this)");
+                };
+            }
+            // Add to the cart
+            function add_cart(elem){
+                var tbody = document.getElementById("cart").getElementsByTagName('tbody')[0];
+                var row = elem.cloneNode(true);
+                row.style.backgroundColor = "white";
+                tbody.appendChild(row);
+                row.setAttribute("onClick", "del_cart(this)");
+                price_calc();
+            }
+            /// Delete from cart
+            function del_cart(elem){
+                elem.remove();
+                price_calc();
+            }
+            /// Highlight table elements
+            function mouse_over(elem){
+                elem.style.backgroundColor = "green";
+            }
+            function mouse_out(elem){
+                elem.style.backgroundColor = "white";
+            }
+            /// Calculate sum of the prices
+            function price_calc(){
+                var sum=0;
+                var cart_body = document.getElementById("cart").getElementsByTagName("tbody")[0];
+                for (i=0; i<cart_body.rows.length; i++){
+                    row = cart_body.rows[i];
+                    sum += Number(row.lastChild.innerText);
+                }
+                document.getElementById("calc").innerText = "Summ: " + sum;
+            }
+        </script>
+    </head>
+    <body>
+        <div class="form">
+            <p>Добавление товара:</p>
+            <form>
+                <label for="name" class="form_add">Наименование</label> <br />
+                <input type="text" class="add" id="name" name="name" placeholder="Bread"> <br />
+                <label for="price" class="form_add">Стоимость</label> <br />
+                <input type="number" class="add" id="price" name="price" placeholder="100"> <br />
+            </form>
+            <button class="add_button" onclick="add_item()"> Add to products</button>
+        </div>      
+        <div class="table">
+            <p>Товары:</p>
+            <table class="product_table"id="products" border="1">
+                <thead>
+                    <tr class="table_head">
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Стоимость</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="cart">
+            <p>Корзина:</p>
+            <table class="cart_table" id="cart" border="1">
+                <thead>
+                    <tr class="table_head">
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Стоимость</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="calc">
+            <p id="calc">Сумма корзины: 0</p>
+        </div>
+    </body>
+</html>
